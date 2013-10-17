@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/addressTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_rounded_corners"
+        android:ems="10"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+
+   
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btnSolicitarTaxi"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:scrollbars="vertical" />
+
+        <Button
+            android:id="@+id/btnSolicitarTaxi"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/button_style_gradient"
+            android:onClick="getAddress"
+            android:text="@string/solictar_taxi_text" />
+
+        <ProgressBar
+            android:id="@+id/address_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <ProgressBar
+            android:id="@+id/sending_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/map"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="62dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/enviandoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/map"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="32dp"
+            android:text="@string/enviando_peticion"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</LinearLayout>
