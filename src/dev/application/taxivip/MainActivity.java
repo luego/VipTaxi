@@ -749,7 +749,7 @@ public class MainActivity extends ActionBarActivity implements
 						mSendingIndicator.setVisibility(View.GONE);
 						mSendingText.setVisibility(View.GONE);
 						Intent intent = new Intent(MainActivity.this,
-								RegisterSuccessActivity.class);
+								RequestSuccessActivity.class);
 
 						// Creamos la información a pasar entre actividades
 						Bundle b = new Bundle();

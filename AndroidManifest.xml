@@ -57,7 +57,7 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
-            android:name="dev.application.taxivip.RegisterSuccessActivity"
+            android:name="dev.application.taxivip.RequestSuccessActivity"
             android:label="@string/title_activity_register_success"
             android:parentActivityName="dev.application.taxivip.MainActivity" >
             <meta-data
