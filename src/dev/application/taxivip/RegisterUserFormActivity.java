@@ -5,16 +5,18 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import com.google.gson.Gson;
 
 import dev.application.taxivip.helpers.JSONParser;
 import dev.application.taxivip.helpers.LocationUtils;
+import dev.application.taxivip.helpers.Response;
 import dev.application.taxivip.helpers.UsuariosSQLiteHelper;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -191,13 +193,10 @@ public class RegisterUserFormActivity extends Activity {
 	 */
 	private class RegisterFormTask extends AsyncTask<Void, Void, Boolean> {
 		private JSONParser jsonParser;
-		private static final String KEY_SUCCESS = "success";
-		private static final String KEY_MESSAGE = "message";
 		private String msg = "";
-
+		private Response data;
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
 			msg = "";
 			jsonParser = new JSONParser();
 			mEmail = mEmailView.getText().toString();
@@ -209,12 +208,22 @@ public class RegisterUserFormActivity extends Activity {
 			paramList.add(new BasicNameValuePair("nombreUsuario", mName));
 
 			// getting JSON Object
-			JSONObject json = jsonParser.getJSONFromUrl(
+			/*JSONObject json = jsonParser.getJSONObjectFromUrl(
+					"http://www.pideuntaxi.co/api/usuarios/registrar",
+					paramList);*/
+			String json =  jsonParser.getJSONFromUrl(
 					"http://www.pideuntaxi.co/api/usuarios/registrar",
 					paramList);
 			// check for login response
 			try {
-				if (json.getString(KEY_SUCCESS) != null) {
+				data = new Gson().fromJson(json, Response.class);
+				if(data.getSuccess()){
+					
+				}else{
+					msg = data.getMessage();
+					return false;
+				}
+				/*if (json.getString(KEY_SUCCESS) != null) {
 					String res = json.getString(KEY_SUCCESS);
 					if (res == "true") {
 						return true;
@@ -222,11 +231,10 @@ public class RegisterUserFormActivity extends Activity {
 						msg = json.getString(KEY_MESSAGE);
 						return false;
 					}
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+				}*/
+			} catch (Exception e) {
+				Log.e("JSON Parser", "Error parsing data " + e.toString());
 			}
-			// TODO: register the new account here.
 			return true;
 		}
 
@@ -242,7 +250,6 @@ public class RegisterUserFormActivity extends Activity {
 				Intent mainIntent = new Intent(RegisterUserFormActivity.this,
 						MainActivity.class);
 				RegisterUserFormActivity.this.startActivity(mainIntent);
-				// RegisterUserFormActivity.this.finish();
 				finish();
 			} else {
 				mRegisterStatusMessageView.setError(msg);
