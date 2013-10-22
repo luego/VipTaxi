@@ -207,10 +207,6 @@ public class RegisterUserFormActivity extends Activity {
 			paramList.add(new BasicNameValuePair("numeroUsuario", mPhone));
 			paramList.add(new BasicNameValuePair("nombreUsuario", mName));
 
-			// getting JSON Object
-			/*JSONObject json = jsonParser.getJSONObjectFromUrl(
-					"http://www.pideuntaxi.co/api/usuarios/registrar",
-					paramList);*/
 			String json =  jsonParser.getJSONFromUrl(
 					"http://www.pideuntaxi.co/api/usuarios/registrar",
 					paramList);
@@ -223,15 +219,7 @@ public class RegisterUserFormActivity extends Activity {
 					msg = data.getMessage();
 					return false;
 				}
-				/*if (json.getString(KEY_SUCCESS) != null) {
-					String res = json.getString(KEY_SUCCESS);
-					if (res == "true") {
-						return true;
-					} else {
-						msg = json.getString(KEY_MESSAGE);
-						return false;
-					}
-				}*/
+
 			} catch (Exception e) {
 				Log.e("JSON Parser", "Error parsing data " + e.toString());
 			}
