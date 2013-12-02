@@ -62,7 +62,7 @@ public final class LocationUtils {
     public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     /*
-     * Constants for location update parameters
+     * Constants for mlocation update parameters
      */
     // Milliseconds per second
     public static final int MILLISECONDS_PER_SECOND = 1000;
@@ -83,20 +83,23 @@ public final class LocationUtils {
 
     // Create an empty string for initializing strings
     public static final String EMPTY_STRING = new String();
+    
+	
+	private static final int TWO_MINUTES = 1000 * 60 * 2;
 
     /**
-     * Get the latitude and longitude from the Location object returned by
+     * Get the mlatitude and mlongitude from the Location object returned by
      * Location Services.
      *
-     * @param currentLocation A Location object containing the current location
-     * @return The latitude and longitude of the current location, or null if no
-     * location is available.
+     * @param currentLocation A Location object containing the current mlocation
+     * @return The mlatitude and mlongitude of the current mlocation, or null if no
+     * mlocation is available.
      */
     public static String getLatLng(Context context, Location currentLocation) {
-        // If the location is valid
+        // If the mlocation is valid
         if (currentLocation != null) {
 
-            // Return the latitude and longitude as strings
+            // Return the mlatitude and mlongitude as strings
             return context.getString(
                     R.string.latitude_longitude,
                     currentLocation.getLatitude(),
@@ -134,7 +137,7 @@ public final class LocationUtils {
             throws ClientProtocolException, IOException, JSONException {
 
         String address = String
-                .format(Locale.getDefault(),"http://maps.googleapis.com/maps/api/geocode/json?latlng=%1$f,%2$f&sensor=true&language="
+                .format(Locale.getDefault(),"http://maps.googleapis.com/maps/api/geocode/json?latlng=%1$f,%2$f&sensor=true&components=country:CO&region=co&language="
                                 + Locale.getDefault().getCountry(), lat, lng);
         HttpGet httpGet = new HttpGet(address);
         HttpClient client = new DefaultHttpClient();
@@ -169,4 +172,58 @@ public final class LocationUtils {
 
         return retList;
     }
+    
+    /** Determines whether one Location reading is better than the current Location fix
+     * @param location  The new Location that you want to evaluate
+     * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+     */
+   protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+       if (currentBestLocation == null) {
+           // A new location is always better than no location
+           return true;
+       }
+
+       // Check whether the new location fix is newer or older
+       long timeDelta = location.getTime() - currentBestLocation.getTime();
+       boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
+       boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
+       boolean isNewer = timeDelta > 0;
+
+       // If it's been more than two minutes since the current location, use the new location
+       // because the user has likely moved
+       if (isSignificantlyNewer) {
+           return true;
+       // If the new location is more than two minutes older, it must be worse
+       } else if (isSignificantlyOlder) {
+           return false;
+       }
+
+       // Check whether the new location fix is more or less accurate
+       int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+       boolean isLessAccurate = accuracyDelta > 0;
+       boolean isMoreAccurate = accuracyDelta < 0;
+       boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+       // Check if the old and new location are from the same provider
+       boolean isFromSameProvider = isSameProvider(location.getProvider(),
+               currentBestLocation.getProvider());
+
+       // Determine location quality using a combination of timeliness and accuracy
+       if (isMoreAccurate) {
+           return true;
+       } else if (isNewer && !isLessAccurate) {
+           return true;
+       } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+           return true;
+       }
+       return false;
+   }
+
+   /** Checks whether two providers are the same */
+   private boolean isSameProvider(String provider1, String provider2) {
+       if (provider1 == null) {
+         return provider2 == null;
+       }
+       return provider1.equals(provider2);
+   }
 }

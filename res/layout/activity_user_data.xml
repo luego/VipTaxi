@@ -67,9 +67,10 @@
 
         <Button
             android:id="@+id/saveDataBtn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_style_gradient"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/edittext_rounded_corners"
             android:text="@string/save_data_button" />
 
         <!-- Login progress -->

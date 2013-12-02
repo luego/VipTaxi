@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -67,6 +68,14 @@
         <activity
             android:name="dev.application.taxivip.RegisterUserFormActivity"
             android:label="@string/title_activity_register_user_form" >
+        </activity>
+        <activity
+            android:name="dev.application.taxivip.WhoIsMyTaxiActivity"
+            android:label="@string/title_activity_who_is_my_taxi"
+            android:parentActivityName="dev.application.taxivip.RequestSuccessActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="dev.application.taxivip.RequestSuccessActivity" />
         </activity>
     </application>
 

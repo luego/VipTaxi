@@ -6,36 +6,39 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:background="@color/translucent_yellow" >
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_gradient" >
 
         <EditText
             android:id="@+id/addressTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edittext_rounded_corners"
+            android:background="@drawable/edittext_corners"
             android:ems="10"
             android:inputType="text" />
 
         <TextView
-            android:id="@+id/userPhoneText"
+            android:id="@+id/userLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/addressTxt"
+            android:text="@string/unknown"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/userNameText"
+            android:id="@+id/phoneLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/userPhoneText"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/userLabel"
+            android:text="@string/unknown"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/RelativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -43,17 +46,34 @@
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/btnSolicitarTaxi"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             class="com.google.android.gms.maps.SupportMapFragment"
             android:scrollbars="vertical" />
 
+        <ProgressBar
+            android:id="@+id/sending_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/enviandoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enviando_peticion"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/btnSolicitarTaxi"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/button_style_gradient"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/edittext_rounded_corners"
             android:onClick="getAddress"
             android:text="@string/solictar_taxi_text" />
 
@@ -63,27 +83,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
-
-        <ProgressBar
-            android:id="@+id/sending_progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/map"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="62dp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/enviandoText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/map"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="32dp"
-            android:text="@string/enviando_peticion"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:visibility="gone" />
 
     </RelativeLayout>
 

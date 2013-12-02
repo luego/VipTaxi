@@ -1,5 +1,6 @@
 package dev.application.taxivip;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.TextView;
 
 public class RequestSuccessActivity extends ActionBarActivity {
+	
+	public static String placa_id = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +27,10 @@ public class RequestSuccessActivity extends ActionBarActivity {
         Bundle bundle = this.getIntent().getExtras();
 
         //Construimos el mensaje a mostrar
-        txtAddress.setText("Ya te enviamos tu taxi a la dirección " + bundle.getString("DIRECCION"));
-	}
-	
-	public void backToMain(View v){
-		NavUtils.navigateUpFromSameTask(this);
-	}
+        //txtAddress.setText("Ya te enviamos tu taxi a la dirección " + bundle.getString("DIRECCION"));
+        txtAddress.setText("Se envío su solicitud de servicio, consulte en breve para ver el estado.  ");
+        placa_id = bundle.getString("ID");
+	}	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -54,5 +55,22 @@ public class RequestSuccessActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	public void whoIsMyTaxi(View v){
+		//NavUtils.navigateUpFromSameTask(this);
+		Intent intent = new Intent(RequestSuccessActivity.this,
+				WhoIsMyTaxiActivity.class);
+
+		// Creamos la información a pasar entre actividades
+		Bundle b = new Bundle();
+		b.putString("ID",placa_id);
+		// Añadimos la información al intent
+		intent.putExtras(b);
+		// Iniciamos la nueva actividad
+		startActivity(intent);
+	}
+	
+	
+	
 
 }
